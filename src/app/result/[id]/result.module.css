@@ -1,0 +1,151 @@
+.page {
+  min-height: 100vh;
+  background: radial-gradient(1100px 760px at 15% 10%, rgba(200, 162, 74, 0.14), transparent 60%),
+    radial-gradient(900px 600px at 80% 20%, rgba(200, 162, 74, 0.08), transparent 55%),
+    linear-gradient(180deg, var(--axis-bg) 0%, #06060a 100%);
+  color: var(--axis-text);
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+  padding: 28px 16px 0;
+}
+
+.brand {
+  color: var(--axis-text);
+  text-decoration: none;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.main {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 28px 16px 64px;
+}
+
+.title {
+  font-size: 28px;
+  margin: 0 0 16px;
+}
+
+.card {
+  border: 1px solid var(--axis-border);
+  background: var(--axis-surface);
+  border-radius: 18px;
+  padding: 18px;
+}
+
+.scoreRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  align-items: end;
+}
+
+.kicker {
+  font-size: 12px;
+  color: var(--axis-muted);
+}
+
+.score {
+  font-size: 48px;
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.level {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.meta {
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 16px;
+}
+
+.metaWide {
+  grid-column: 1 / -1;
+}
+
+.metaLabel {
+  display: block;
+  font-size: 12px;
+  color: var(--axis-muted);
+}
+
+.metaValue {
+  display: block;
+  font-size: 14px;
+  color: rgba(245, 246, 248, 0.92);
+  white-space: pre-wrap;
+}
+
+.section {
+  margin-top: 18px;
+  border: 1px solid var(--axis-border);
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 18px;
+  padding: 16px;
+}
+
+.sectionTitle {
+  margin: 0 0 10px;
+  font-size: 16px;
+}
+
+.breakdown {
+  display: grid;
+  gap: 8px;
+}
+
+.breakdownRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.breakdownKey {
+  color: rgba(245, 246, 248, 0.86);
+}
+
+.breakdownValue {
+  font-weight: 700;
+}
+
+.muted {
+  color: rgba(245, 246, 248, 0.65);
+}
+
+.actions {
+  margin-top: 18px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.primary {
+  text-decoration: none;
+  border-radius: 999px;
+  padding: 12px 16px;
+  background: linear-gradient(90deg, var(--axis-accent), #f1d08a);
+  color: #141414;
+  font-weight: 800;
+}
+
+.secondary {
+  text-decoration: none;
+  border-radius: 999px;
+  padding: 12px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: rgba(245, 246, 248, 0.9);
+}
+

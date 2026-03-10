@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Instagramの運用診断ツール（叩き台）です。
 
 ## Getting Started
 
-First, run the development server:
+### ローカル起動
+
+まず依存を入れて、環境変数を設定し、開発サーバーを起動します。
 
 ```bash
+npm install
+cp .env.example .env.local
+# .env.local を編集して SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY を設定
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+ブラウザで `http://localhost:3000` を開いてください。
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 使い方（動線）
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- 公開側（回答者）
+  - トップ: `/`
+  - 診断フォーム: `/diagnose?url=https://配布元URL`（`url` は任意）
+  - 結果: `/result/:id`（回答後に自動遷移）
+  - Axis配布用: `/axis`、`/axis/diagnose`、`/axis/result/:id`
+- 開発者側（管理）
+  - 一覧: `/admin`
+  - 詳細: `/admin/:id`
+  - CSV: `/admin/export`
 
-## Learn More
+### 管理画面のBasic認証
 
-To learn more about Next.js, take a look at the following resources:
+デフォルトは `admin / admin` です。環境変数で変更できます。
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+export ADMIN_USER="your-user"
+export ADMIN_PASS="your-pass"
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### データ保存
 
-## Deploy on Vercel
+回答データは **Supabase（Postgres）** の `submissions` テーブルに保存されます。
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Supabase セットアップ（無料）
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1) Supabaseで新規プロジェクトを作成  
+2) SupabaseのSQL Editorで `supabase/schema.sql` を実行  
+3) Project Settings → API から以下を取得し、`.env.local` に設定  
+   - `SUPABASE_URL`
+   - `SUPABASE_SERVICE_ROLE_KEY`（※サーバー専用。絶対に公開しない）
+
+## 公開URL（社外OK）で配布する（Vercel）
+
+1) Vercelにこのリポジトリ/フォルダをインポートしてデプロイ  
+2) Vercelの Environment Variables に以下を設定して再デプロイ  
+   - `SUPABASE_URL`
+   - `SUPABASE_SERVICE_ROLE_KEY`
+   - `ADMIN_USER`
+   - `ADMIN_PASS`
+
+配布は `https://<your-app>.vercel.app/axis` を使うのが簡単です。

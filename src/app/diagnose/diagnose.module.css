@@ -1,0 +1,143 @@
+.page {
+  min-height: 100vh;
+  background: radial-gradient(1100px 700px at 20% 10%, rgba(200, 162, 74, 0.14), transparent 60%),
+    radial-gradient(900px 600px at 90% 20%, rgba(200, 162, 74, 0.08), transparent 55%),
+    linear-gradient(180deg, var(--axis-bg) 0%, #06060a 100%);
+  color: var(--axis-text);
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+  padding: 28px 16px 0;
+}
+
+.brand {
+  color: var(--axis-text);
+  text-decoration: none;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.main {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 28px 16px 64px;
+}
+
+.title {
+  font-size: 28px;
+  margin: 0 0 10px;
+}
+
+.lead {
+  margin: 0 0 18px;
+  color: var(--axis-muted);
+}
+
+.error {
+  border: 1px solid rgba(255, 136, 0, 0.35);
+  background: rgba(255, 136, 0, 0.12);
+  padding: 10px 12px;
+  border-radius: 10px;
+  margin: 0 0 16px;
+}
+
+.form {
+  display: grid;
+  gap: 18px;
+}
+
+.section {
+  border: 1px solid var(--axis-border);
+  background: var(--axis-surface);
+  border-radius: 16px;
+  padding: 16px;
+}
+
+.sectionTitle {
+  font-size: 16px;
+  margin: 0 0 12px;
+  color: rgba(245, 246, 248, 0.92);
+}
+
+.field {
+  display: grid;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.label {
+  font-size: 13px;
+  color: var(--axis-muted);
+}
+
+.input,
+.textarea {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid var(--axis-border);
+  background: rgba(0, 0, 0, 0.25);
+  padding: 10px 12px;
+  color: var(--axis-text);
+  outline: none;
+}
+
+.input:focus,
+.textarea:focus {
+  border-color: rgba(200, 162, 74, 0.7);
+  box-shadow: 0 0 0 4px rgba(200, 162, 74, 0.16);
+}
+
+.fieldset {
+  border: 1px dashed rgba(255, 255, 255, 0.16);
+  border-radius: 14px;
+  padding: 12px;
+  margin: 12px 0 0;
+}
+
+.legend {
+  padding: 0 6px;
+  color: rgba(245, 246, 248, 0.9);
+  font-size: 13px;
+}
+
+.radio {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-top: 8px;
+  color: rgba(245, 246, 248, 0.86);
+  font-size: 14px;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.submit {
+  border: 0;
+  border-radius: 999px;
+  padding: 12px 16px;
+  background: linear-gradient(90deg, var(--axis-accent), #f1d08a);
+  color: #141414;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.submit:hover {
+  filter: brightness(1.03);
+}
+
+.back {
+  color: rgba(245, 246, 248, 0.82);
+  text-decoration: none;
+}
+
+.back:hover {
+  text-decoration: underline;
+}
+

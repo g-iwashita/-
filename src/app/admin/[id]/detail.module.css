@@ -1,0 +1,143 @@
+.page {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #0b0b10 0%, #07070b 100%);
+  color: #f5f6f8;
+}
+
+.header {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.back {
+  color: rgba(245, 246, 248, 0.9);
+  text-decoration: none;
+}
+
+.back:hover {
+  text-decoration: underline;
+}
+
+.exportOne {
+  color: rgba(245, 246, 248, 0.9);
+  text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  padding: 8px 12px;
+  border-radius: 999px;
+}
+
+.main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 16px 64px;
+}
+
+.title {
+  margin: 10px 0 16px;
+  font-size: 22px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.card {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.kicker {
+  font-size: 12px;
+  color: rgba(245, 246, 248, 0.7);
+}
+
+.value {
+  margin-top: 6px;
+  color: rgba(245, 246, 248, 0.92);
+  white-space: pre-wrap;
+}
+
+.score {
+  font-weight: 900;
+  font-size: 22px;
+}
+
+.section {
+  margin-top: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.sectionTitle {
+  margin: 0 0 10px;
+  font-size: 16px;
+}
+
+.answers {
+  display: grid;
+  gap: 10px;
+}
+
+.answerRow {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.answerQ {
+  color: rgba(245, 246, 248, 0.86);
+}
+
+.answerA {
+  font-weight: 800;
+  color: rgba(245, 246, 248, 0.92);
+}
+
+.pre {
+  margin: 0;
+  padding: 12px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  overflow: auto;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.actions {
+  margin-top: 16px;
+}
+
+.public {
+  display: inline-flex;
+  text-decoration: none;
+  border-radius: 999px;
+  padding: 12px 16px;
+  background: linear-gradient(90deg, var(--axis-accent), #f1d08a);
+  color: #141414;
+  font-weight: 800;
+}
+
+@media (max-width: 860px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  .answerRow {
+    grid-template-columns: 1fr;
+  }
+}
+
