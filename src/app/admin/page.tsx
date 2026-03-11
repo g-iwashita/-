@@ -23,6 +23,9 @@ export default async function AdminPage(props: Props) {
           <Link className={styles.export} href="/admin/export" prefetch={false}>
             CSVを書き出す
           </Link>
+          <a className={styles.export} href="/api/admin-logout">
+            ログアウト
+          </a>
         </div>
       </header>
 
