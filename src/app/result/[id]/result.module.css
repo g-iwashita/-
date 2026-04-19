@@ -56,6 +56,13 @@
   letter-spacing: -0.02em;
 }
 
+.scoreUnit {
+  font-size: 18px;
+  font-weight: 600;
+  color: rgba(245, 246, 248, 0.7);
+  margin-left: 4px;
+}
+
 .level {
   font-size: 22px;
   font-weight: 700;
@@ -123,6 +130,37 @@
 
 .muted {
   color: rgba(245, 246, 248, 0.65);
+}
+
+.sectionText {
+  color: rgba(245, 246, 248, 0.88);
+  font-size: 14px;
+  line-height: 1.8;
+  margin: 0;
+}
+
+.nextActionList {
+  margin: 0;
+  padding-left: 20px;
+  display: grid;
+  gap: 10px;
+}
+
+.nextActionItem {
+  color: rgba(245, 246, 248, 0.88);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.timeAdvice {
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(200, 162, 74, 0.35);
+  background: rgba(200, 162, 74, 0.08);
+  color: rgba(245, 246, 248, 0.92);
+  font-size: 13px;
+  line-height: 1.7;
 }
 
 .actions {

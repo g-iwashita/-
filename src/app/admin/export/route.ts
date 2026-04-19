@@ -12,10 +12,17 @@ export async function GET() {
   const rows = await listSubmissions(5000);
 
   const answerKeys: (keyof DiagnosisAnswers)[] = [
-    "postingFrequency",
-    "hasContentPlan",
-    "usesInsights",
-    "hasKpi",
+    "businessAccount",
+    "profileReview",
+    "postConsistency",
+    "targetClarity",
+    "storiesDaily",
+    "highlightsUpdated",
+    "insightsCheck",
+    "competitorCheck",
+    "competitorAnalysis",
+    "adUsage",
+    "dailyTime",
   ];
 
   const header = [
@@ -23,7 +30,6 @@ export async function GET() {
     "createdAt",
     "sourceUrl",
     "instagramAccountName",
-    "operationMonths",
     "purpose",
     "score",
     "level",
@@ -48,7 +54,6 @@ export async function GET() {
           r.createdAt,
           r.sourceUrl ?? "",
           r.instagramAccountName,
-          r.operationMonths,
           r.purpose,
           r.score,
           r.level,

@@ -22,32 +22,37 @@ export default async function AdminDetailPage(props: Props) {
 
   const a = parsed.answers ?? {};
 
+  const yesNo = { yes: "はい", no: "いいえ" };
   const answerLabels: Record<keyof DiagnosisAnswers, Record<string, string>> = {
-    postingFrequency: {
-      daily: "ほぼ毎日",
-      few_per_week: "週に数回",
-      weekly: "週1回程度",
-      rare: "ほとんど投稿していない",
+    businessAccount: yesNo,
+    profileReview: yesNo,
+    postConsistency: yesNo,
+    targetClarity: yesNo,
+    storiesDaily: yesNo,
+    highlightsUpdated: yesNo,
+    insightsCheck: yesNo,
+    competitorCheck: yesNo,
+    competitorAnalysis: yesNo,
+    adUsage: yesNo,
+    dailyTime: {
+      under_15: "15分未満",
+      between_15_30: "15〜30分",
+      over_30: "30分以上",
     },
-    hasContentPlan: { yes: "はい", no: "いいえ" },
-    usesInsights: {
-      often: "毎週/毎回見て改善している",
-      sometimes: "たまに見る",
-      rarely: "ほとんど見ない",
-      never: "見たことがない",
-    },
-    hasKpi: { yes: "はい", no: "いいえ" },
   };
 
   const answerRowsBase = [
-    { key: "postingFrequency", question: "投稿頻度", value: a.postingFrequency ?? "-" },
-    {
-      key: "hasContentPlan",
-      question: "投稿のコンテンツ企画（ネタ出し/台本/撮影計画など）",
-      value: a.hasContentPlan ?? "-",
-    },
-    { key: "usesInsights", question: "インサイト（分析）を見る頻度", value: a.usesInsights ?? "-" },
-    { key: "hasKpi", question: "KPIを決めているか", value: a.hasKpi ?? "-" },
+    { key: "businessAccount", question: "Q1. ビジネス/クリエイターアカウント切替", value: a.businessAccount ?? "-" },
+    { key: "profileReview", question: "Q2. プロフィール定期見直し", value: a.profileReview ?? "-" },
+    { key: "postConsistency", question: "Q3. 投稿の統一感", value: a.postConsistency ?? "-" },
+    { key: "targetClarity", question: "Q4. 誰に・何を発信するかの明確化", value: a.targetClarity ?? "-" },
+    { key: "storiesDaily", question: "Q5. ストーリーズ毎日更新", value: a.storiesDaily ?? "-" },
+    { key: "highlightsUpdated", question: "Q6. ハイライト定期更新", value: a.highlightsUpdated ?? "-" },
+    { key: "insightsCheck", question: "Q7. インサイト定期確認", value: a.insightsCheck ?? "-" },
+    { key: "competitorCheck", question: "Q8-A. 競合・同ジャンル定期チェック", value: a.competitorCheck ?? "-" },
+    { key: "competitorAnalysis", question: "Q8-B. 伸びている投稿の分析", value: a.competitorAnalysis ?? "-" },
+    { key: "adUsage", question: "Q9. 集客目的のInstagram広告運用", value: a.adUsage ?? "-" },
+    { key: "dailyTime", question: "Q10. 1日の運用時間", value: a.dailyTime ?? "-" },
   ] satisfies { key: keyof DiagnosisAnswers; question: string; value: string }[];
 
   const answerRows = answerRowsBase.map((r) => ({
@@ -77,10 +82,6 @@ export default async function AdminDetailPage(props: Props) {
           <div className={styles.card}>
             <div className={styles.kicker}>アカウント名</div>
             <div className={styles.value}>{submission.instagramAccountName}</div>
-          </div>
-          <div className={styles.card}>
-            <div className={styles.kicker}>運用期間</div>
-            <div className={styles.value}>{submission.operationMonths}ヶ月</div>
           </div>
           <div className={styles.card}>
             <div className={styles.kicker}>運用目的</div>

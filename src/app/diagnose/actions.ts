@@ -5,6 +5,8 @@ import { redirect } from "next/navigation";
 import { insertSubmission } from "@/lib/db";
 import { scoreDiagnosis, type DiagnosisAnswers } from "@/lib/scoring";
 
+const yesNo = z.enum(["yes", "no"]);
+
 const schema = z.object({
   sourceUrl: z.string().url().optional().or(z.literal("")),
   returnBase: z.enum(["default", "axis"]).optional(),
@@ -12,17 +14,19 @@ const schema = z.object({
     .string()
     .min(1, "Instagramのアカウント名を入力してください")
     .max(100),
-  operationMonths: z.coerce
-    .number()
-    .int()
-    .min(0, "運用期間（月）を0以上で入力してください")
-    .max(600),
   purpose: z.string().min(1, "運用目的を入力してください").max(2000),
 
-  postingFrequency: z.enum(["daily", "few_per_week", "weekly", "rare"]),
-  hasContentPlan: z.enum(["yes", "no"]),
-  usesInsights: z.enum(["often", "sometimes", "rarely", "never"]),
-  hasKpi: z.enum(["yes", "no"]),
+  businessAccount: yesNo,
+  profileReview: yesNo,
+  postConsistency: yesNo,
+  targetClarity: yesNo,
+  storiesDaily: yesNo,
+  highlightsUpdated: yesNo,
+  insightsCheck: yesNo,
+  competitorCheck: yesNo,
+  competitorAnalysis: yesNo,
+  adUsage: yesNo,
+  dailyTime: z.enum(["under_15", "between_15_30", "over_30"]),
 });
 
 export async function submitDiagnosis(formData: FormData) {
@@ -31,10 +35,11 @@ export async function submitDiagnosis(formData: FormData) {
 
   if (!parsed.success) {
     const message = parsed.error.issues[0]?.message ?? "入力内容を確認してください";
-    redirect(`/diagnose?error=${encodeURIComponent(message)}`);
+    const base = raw.returnBase === "axis" ? "/axis" : "";
+    redirect(`${base}/diagnose?error=${encodeURIComponent(message)}`);
   }
 
-  const { sourceUrl, returnBase, instagramAccountName, operationMonths, purpose, ...answers } =
+  const { sourceUrl, returnBase, instagramAccountName, purpose, ...answers } =
     parsed.data;
   const result = scoreDiagnosis(answers as DiagnosisAnswers);
 
@@ -43,9 +48,17 @@ export async function submitDiagnosis(formData: FormData) {
     id,
     sourceUrl: sourceUrl ? sourceUrl : null,
     instagramAccountName,
-    operationMonths,
+    operationMonths: 0,
     purpose,
-    answersJson: JSON.stringify({ answers, breakdown: result.breakdown }),
+    answersJson: JSON.stringify({
+      answers,
+      breakdown: result.breakdown,
+      bottleneck: result.bottleneck,
+      currentState: result.currentState,
+      bottleneckText: result.bottleneckText,
+      nextActions: result.nextActions,
+      timeAdvice: result.timeAdvice,
+    }),
     score: result.score,
     level: result.level,
   });
@@ -53,4 +66,3 @@ export async function submitDiagnosis(formData: FormData) {
   const base = returnBase === "axis" ? "/axis" : "";
   redirect(`${base}/result/${id}`);
 }
-
