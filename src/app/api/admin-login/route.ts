@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { checkCredentials } from "@/lib/adminAuth";
 
 const COOKIE_NAME = "admin_session";
 
@@ -7,15 +8,13 @@ export async function POST(request: NextRequest) {
   const user = (form.get("user") ?? "").toString();
   const pass = (form.get("pass") ?? "").toString();
 
-  const expectedUser = process.env.ADMIN_USER ?? "admin";
-  const expectedPass = process.env.ADMIN_PASS ?? "admin";
-
-  if (user !== expectedUser || pass !== expectedPass) {
+  if (!checkCredentials(user, pass)) {
     return NextResponse.redirect(new URL("/admin/login?error=1", request.url));
   }
 
+  const value = Buffer.from(`${user}:${pass}`, "utf8").toString("base64");
   const res = NextResponse.redirect(new URL("/admin", request.url));
-  res.cookies.set(COOKIE_NAME, expectedPass, {
+  res.cookies.set(COOKIE_NAME, value, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
