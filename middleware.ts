@@ -14,8 +14,38 @@ function decodeCookie(cookieValue: string): { user: string; pass: string } | nul
   }
 }
 
+function redirectTo(pathname: string, request: NextRequest, preserveQuery = false): NextResponse {
+  const target = new URL(pathname, request.url);
+  if (preserveQuery) target.search = request.nextUrl.search;
+  return NextResponse.redirect(target);
+}
+
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  // 結果ページの旧パスは ID を保ったまま新パスへ
+  if (pathname.startsWith("/axis/result/")) {
+    const id = pathname.replace("/axis/result/", "");
+    return redirectTo(`/accountdiagnosis/result/${id}`, request);
+  }
+  if (pathname.startsWith("/result/")) {
+    const id = pathname.replace("/result/", "");
+    return redirectTo(`/accountdiagnosis/result/${id}`, request);
+  }
+
+  // 顧客向けに見せたくない旧パスは診断フォームへ集約
+  if (
+    pathname === "/" ||
+    pathname === "/diagnose" ||
+    pathname.startsWith("/diagnose/") ||
+    pathname === "/result" ||
+    pathname === "/axis" ||
+    pathname === "/axis/diagnose"
+  ) {
+    return redirectTo("/accountdiagnosis/diagnose", request, true);
+  }
+
+  // 管理画面は Basic 認証
   if (!pathname.startsWith("/admin")) return NextResponse.next();
   if (pathname === "/admin/login") return NextResponse.next();
 
@@ -44,6 +74,15 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin", "/admin/:path*"],
+  matcher: [
+    "/",
+    "/diagnose",
+    "/diagnose/:path*",
+    "/result",
+    "/result/:path*",
+    "/axis",
+    "/axis/:path*",
+    "/admin",
+    "/admin/:path*",
+  ],
 };
-

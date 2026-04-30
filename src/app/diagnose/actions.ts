@@ -9,7 +9,6 @@ const yesNo = z.enum(["yes", "no"]);
 
 const schema = z.object({
   sourceUrl: z.string().url().optional().or(z.literal("")),
-  returnBase: z.enum(["default", "axis"]).optional(),
   instagramAccountName: z
     .string()
     .min(1, "Instagramのアカウント名を入力してください")
@@ -35,11 +34,10 @@ export async function submitDiagnosis(formData: FormData) {
 
   if (!parsed.success) {
     const message = parsed.error.issues[0]?.message ?? "入力内容を確認してください";
-    const base = raw.returnBase === "axis" ? "/axis" : "";
-    redirect(`${base}/diagnose?error=${encodeURIComponent(message)}`);
+    redirect(`/accountdiagnosis/diagnose?error=${encodeURIComponent(message)}`);
   }
 
-  const { sourceUrl, returnBase, instagramAccountName, purpose, ...answers } =
+  const { sourceUrl, instagramAccountName, purpose, ...answers } =
     parsed.data;
   const result = scoreDiagnosis(answers as DiagnosisAnswers);
 
@@ -53,16 +51,13 @@ export async function submitDiagnosis(formData: FormData) {
     answersJson: JSON.stringify({
       answers,
       breakdown: result.breakdown,
-      bottleneck: result.bottleneck,
       currentState: result.currentState,
-      bottleneckText: result.bottleneckText,
-      nextActions: result.nextActions,
-      timeAdvice: result.timeAdvice,
+      growth: result.growth,
+      improvements: result.improvements,
     }),
     score: result.score,
     level: result.level,
   });
 
-  const base = returnBase === "axis" ? "/axis" : "";
-  redirect(`${base}/result/${id}`);
+  redirect(`/accountdiagnosis/result/${id}`);
 }

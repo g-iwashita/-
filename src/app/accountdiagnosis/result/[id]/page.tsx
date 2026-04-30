@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getSubmissionById } from "@/lib/db";
-import styles from "@/app/result/[id]/result.module.css";
+import styles from "./result.module.css";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -9,12 +9,11 @@ type Props = {
 
 type ParsedAnswers = {
   currentState?: string;
-  bottleneckText?: string;
-  nextActions?: string[];
-  timeAdvice?: string | null;
+  growth?: string;
+  improvements?: string[];
 };
 
-export default async function AxisResultPage(props: Props) {
+export default async function ResultPage(props: Props) {
   const { id } = await props.params;
   const submission = await getSubmissionById(id);
   if (!submission) notFound();
@@ -29,9 +28,7 @@ export default async function AxisResultPage(props: Props) {
   return (
     <div className={styles.page}>
       <header className={styles.header}>
-        <Link className={styles.brand} href="/axis">
-          AxisOne / Instagram運用診断
-        </Link>
+        <span className={styles.brand}>Instagram運用診断</span>
       </header>
 
       <main className={styles.main}>
@@ -70,35 +67,29 @@ export default async function AxisResultPage(props: Props) {
           </section>
         ) : null}
 
-        {parsed.bottleneckText ? (
+        {parsed.growth ? (
           <section className={styles.section}>
-            <h2 className={styles.sectionTitle}>一番のボトルネック</h2>
-            <p className={styles.sectionText}>{parsed.bottleneckText}</p>
+            <h2 className={styles.sectionTitle}>伸びしろ</h2>
+            <p className={styles.sectionText}>{parsed.growth}</p>
           </section>
         ) : null}
 
-        {parsed.nextActions && parsed.nextActions.length ? (
+        {parsed.improvements && parsed.improvements.length ? (
           <section className={styles.section}>
-            <h2 className={styles.sectionTitle}>次の一手</h2>
-            <ol className={styles.nextActionList}>
-              {parsed.nextActions.map((a, i) => (
-                <li key={i} className={styles.nextActionItem}>
+            <h2 className={styles.sectionTitle}>改善案</h2>
+            <ul className={styles.improvementList}>
+              {parsed.improvements.map((a, i) => (
+                <li key={i} className={styles.improvementItem}>
                   {a}
                 </li>
               ))}
-            </ol>
-            {parsed.timeAdvice ? (
-              <div className={styles.timeAdvice}>※ {parsed.timeAdvice}</div>
-            ) : null}
+            </ul>
           </section>
         ) : null}
 
         <div className={styles.actions}>
-          <Link className={styles.primary} href="/axis/diagnose">
+          <Link className={styles.primary} href="/accountdiagnosis/diagnose">
             もう一度診断する
-          </Link>
-          <Link className={styles.secondary} href="/axis">
-            トップへ
           </Link>
         </div>
       </main>

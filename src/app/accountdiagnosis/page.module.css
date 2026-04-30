@@ -1,0 +1,156 @@
+.page {
+  min-height: 100vh;
+  background: #ffffff;
+  color: #1a1f36;
+  font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic UI", "Meiryo", sans-serif;
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+  padding: 28px 16px 0;
+}
+
+.brand {
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #22335a;
+  font-size: 14px;
+}
+
+.main {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 40px 20px 80px;
+}
+
+.title {
+  font-size: 30px;
+  margin: 0 0 12px;
+  color: #1a1f36;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.lead {
+  margin: 0 0 28px;
+  color: #5a6478;
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+.form {
+  display: grid;
+  width: 100%;
+  max-width: 520px;
+  gap: 16px;
+  padding: 24px;
+  border-radius: 16px;
+  border: 1px solid #e2e6ec;
+  background: #f7f9fc;
+}
+
+.field {
+  display: grid;
+  gap: 8px;
+}
+
+.label {
+  font-size: 13px;
+  color: #5a6478;
+  font-weight: 600;
+}
+
+.input {
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid #d8dde6;
+  background: #ffffff;
+  padding: 12px 14px;
+  color: #1a1f36;
+  outline: none;
+  font-size: 14px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.input:focus {
+  border-color: #22335a;
+  box-shadow: 0 0 0 3px rgba(34, 51, 90, 0.12);
+}
+
+.primary,
+.secondary {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  height: 46px;
+  padding: 0 20px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  transition: 0.15s;
+  cursor: pointer;
+  width: fit-content;
+  font-weight: 700;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.primary {
+  background: #22335a;
+  color: #ffffff;
+}
+
+.primary:hover {
+  background: #1a2849;
+}
+
+.secondary {
+  border-color: #d8dde6;
+  color: #5a6478;
+  background: transparent;
+}
+
+.secondary:hover {
+  background: #f0f3f7;
+  color: #1a1f36;
+}
+
+@media (max-width: 640px) {
+  .header {
+    padding: 20px 16px 0;
+  }
+
+  .main {
+    padding: 32px 16px 64px;
+  }
+
+  .title {
+    font-size: 24px;
+    margin: 0 0 10px;
+    line-height: 1.4;
+  }
+
+  .lead {
+    font-size: 14px;
+    margin: 0 0 22px;
+    line-height: 1.8;
+  }
+
+  .form {
+    padding: 20px 18px;
+    gap: 14px;
+    border-radius: 14px;
+  }
+
+  .input {
+    font-size: 16px;
+    padding: 12px 14px;
+  }
+
+  .primary,
+  .secondary {
+    width: 100%;
+    height: 48px;
+    font-size: 15px;
+  }
+}
