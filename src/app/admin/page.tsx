@@ -53,7 +53,6 @@ export default async function AdminPage(props: Props) {
           <div className={`${styles.row} ${styles.head}`}>
             <div>日時</div>
             <div>アカウント</div>
-            <div>運用期間</div>
             <div>スコア</div>
             <div>レベル</div>
           </div>
@@ -63,7 +62,6 @@ export default async function AdminPage(props: Props) {
               <Link key={s.id} className={styles.row} href={`/admin/${s.id}`}>
                 <div className={styles.mono}>{new Date(s.createdAt).toLocaleString()}</div>
                 <div>{s.instagramAccountName}</div>
-                <div>{s.operationMonths}ヶ月</div>
                 <div className={styles.score}>{s.score}</div>
                 <div>{s.level}</div>
               </Link>

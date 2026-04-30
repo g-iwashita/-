@@ -123,7 +123,7 @@
 
 .row {
   display: grid;
-  grid-template-columns: 220px 1.2fr 110px 90px 160px;
+  grid-template-columns: 220px 1.2fr 90px 160px;
   gap: 12px;
   padding: 12px 14px;
   border-top: 1px solid rgba(255, 255, 255, 0.06);
