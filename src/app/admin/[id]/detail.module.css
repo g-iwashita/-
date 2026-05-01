@@ -118,6 +118,45 @@
   line-height: 1.5;
 }
 
+.feedbackText {
+  color: rgba(245, 246, 248, 0.9);
+  font-size: 14px;
+  line-height: 1.9;
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.improvementList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 12px;
+}
+
+.improvementItem {
+  color: rgba(245, 246, 248, 0.9);
+  font-size: 14px;
+  line-height: 1.85;
+  padding-left: 20px;
+  position: relative;
+}
+
+.improvementItem::before {
+  content: "・";
+  color: rgba(245, 246, 248, 0.65);
+  font-weight: 700;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.feedbackEmpty {
+  color: rgba(245, 246, 248, 0.55);
+  font-size: 13px;
+  margin: 0;
+}
+
 .actions {
   margin-top: 16px;
 }

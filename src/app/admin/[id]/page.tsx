@@ -13,7 +13,13 @@ export default async function AdminDetailPage(props: Props) {
   const submission = await getSubmissionById(id);
   if (!submission) notFound();
 
-  let parsed: { answers?: Partial<DiagnosisAnswers>; breakdown?: Record<string, number> } = {};
+  let parsed: {
+    answers?: Partial<DiagnosisAnswers>;
+    breakdown?: Record<string, number>;
+    currentState?: string;
+    growth?: string;
+    improvements?: string[];
+  } = {};
   try {
     parsed = JSON.parse(submission.answersJson) as typeof parsed;
   } catch {
@@ -112,8 +118,36 @@ export default async function AdminDetailPage(props: Props) {
         </section>
 
         <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>回答JSON（生データ）</h2>
-          <pre className={styles.pre}>{submission.answersJson}</pre>
+          <h2 className={styles.sectionTitle}>現在地</h2>
+          {parsed.currentState ? (
+            <p className={styles.feedbackText}>{parsed.currentState}</p>
+          ) : (
+            <p className={styles.feedbackEmpty}>(データなし)</p>
+          )}
+        </section>
+
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>伸びしろ</h2>
+          {parsed.growth ? (
+            <p className={styles.feedbackText}>{parsed.growth}</p>
+          ) : (
+            <p className={styles.feedbackEmpty}>(データなし)</p>
+          )}
+        </section>
+
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>改善案</h2>
+          {parsed.improvements && parsed.improvements.length ? (
+            <ul className={styles.improvementList}>
+              {parsed.improvements.map((item, i) => (
+                <li key={i} className={styles.improvementItem}>
+                  {item}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className={styles.feedbackEmpty}>(データなし)</p>
+          )}
         </section>
 
         <div className={styles.actions}>
