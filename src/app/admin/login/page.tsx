@@ -8,11 +8,17 @@ type Props = {
 export default async function AdminLoginPage(props: Props) {
   const sp = (await props.searchParams) ?? {};
   const error = sp.error === "1";
+  const changedAdmin = sp.changed === "admin";
 
   return (
     <div className={styles.page}>
       <main className={styles.main} style={{ maxWidth: 400, paddingTop: 80 }}>
         <h1 className={styles.title}>管理画面ログイン</h1>
+        {changedAdmin ? (
+          <p style={{ color: "#7ddc9a", marginBottom: 16 }}>
+            管理者用パスワードを変更しました。新しいパスワードでログインしてください。
+          </p>
+        ) : null}
         {error ? (
           <p style={{ color: "rgba(255,100,100,0.9)", marginBottom: 16 }}>
             ユーザー名またはパスワードが違います。
@@ -20,7 +26,9 @@ export default async function AdminLoginPage(props: Props) {
         ) : null}
         <form action="/api/admin-login" method="post" style={{ display: "grid", gap: 12 }}>
           <label style={{ display: "grid", gap: 4 }}>
-            <span style={{ fontSize: 13, color: "rgba(245,246,248,0.8)" }}>ユーザー名</span>
+            <span style={{ fontSize: 13, color: "rgba(245,246,248,0.8)" }}>
+              ユーザー名（管理者は admin、メンバーは member）
+            </span>
             <input
               type="text"
               name="user"

@@ -1,14 +1,19 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getSubmissionById } from "@/lib/db";
+import { requireSession } from "@/lib/session";
 import type { DiagnosisAnswers } from "@/lib/scoring";
 import styles from "./detail.module.css";
+
+// 認証必須ページ。常にリクエスト時にレンダリングする（静的化させない）。
+export const dynamic = "force-dynamic";
 
 type Props = {
   params: Promise<{ id: string }>;
 };
 
 export default async function AdminDetailPage(props: Props) {
+  await requireSession();
   const { id } = await props.params;
   const submission = await getSubmissionById(id);
   if (!submission) notFound();

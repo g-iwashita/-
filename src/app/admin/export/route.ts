@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { listSubmissions } from "@/lib/db";
+import { requireAdmin } from "@/lib/session";
 import type { DiagnosisAnswers } from "@/lib/scoring";
 
 function csvEscape(value: unknown) {
@@ -9,6 +10,7 @@ function csvEscape(value: unknown) {
 }
 
 export async function GET() {
+  await requireAdmin();
   const rows = await listSubmissions(5000);
 
   const answerKeys: (keyof DiagnosisAnswers)[] = [

@@ -3,6 +3,7 @@
 import { z } from "zod";
 import { redirect } from "next/navigation";
 import { insertSubmission } from "@/lib/db";
+import { sendDiagnosisNotification } from "@/lib/email";
 import { scoreDiagnosis, type DiagnosisAnswers } from "@/lib/scoring";
 
 const yesNo = z.enum(["yes", "no"]);
@@ -42,7 +43,7 @@ export async function submitDiagnosis(formData: FormData) {
   const result = scoreDiagnosis(answers as DiagnosisAnswers);
 
   const id = crypto.randomUUID();
-  await insertSubmission({
+  const submission = await insertSubmission({
     id,
     sourceUrl: sourceUrl ? sourceUrl : null,
     instagramAccountName,
@@ -58,6 +59,13 @@ export async function submitDiagnosis(formData: FormData) {
     score: result.score,
     level: result.level,
   });
+
+  // 通知メールを送信する。失敗しても診断の保存・結果表示は止めない。
+  try {
+    await sendDiagnosisNotification(submission);
+  } catch (e) {
+    console.error("[notify] 通知メールの送信に失敗しました:", e);
+  }
 
   redirect(`/accountdiagnosis/result/${id}`);
 }

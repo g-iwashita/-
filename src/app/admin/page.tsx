@@ -1,12 +1,19 @@
 import Link from "next/link";
 import { searchSubmissionsByAccountName } from "@/lib/db";
+import { requireSession } from "@/lib/session";
 import styles from "./admin.module.css";
+
+// 認証必須ページ。常にリクエスト時にレンダリングする（静的化させない）。
+export const dynamic = "force-dynamic";
 
 type Props = {
   searchParams?: Promise<Record<string, string | string[] | undefined>>;
 };
 
 export default async function AdminPage(props: Props) {
+  const session = await requireSession();
+  const isAdmin = session.role === "admin";
+
   const sp = (await props.searchParams) ?? {};
   const q = typeof sp.q === "string" ? sp.q : "";
   const match = sp.match === "exact" ? "exact" : "partial";
@@ -20,9 +27,19 @@ export default async function AdminPage(props: Props) {
           <Link className={styles.brand} href="/">
             Instagram運用診断
           </Link>
-          <Link className={styles.export} href="/admin/export" prefetch={false}>
-            CSVを書き出す
-          </Link>
+          {isAdmin ? (
+            <>
+              <Link className={styles.export} href="/admin/recipients" prefetch={false}>
+                通知先メンバー
+              </Link>
+              <Link className={styles.export} href="/admin/settings" prefetch={false}>
+                設定
+              </Link>
+              <Link className={styles.export} href="/admin/export" prefetch={false}>
+                CSVを書き出す
+              </Link>
+            </>
+          ) : null}
           <a className={styles.export} href="/api/admin-logout">
             ログアウト
           </a>
