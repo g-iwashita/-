@@ -48,38 +48,10 @@ function parse(submission: Submission): ParsedAnswers {
   }
 }
 
-function buildEmail(submission: Submission): { subject: string; text: string; html: string } {
+function buildEmail(submission: Submission): { subject: string; html: string } {
   const parsed = parse(submission);
   const a = parsed.answers ?? {};
   const detailUrl = `${BASE_URL}/admin/${submission.id}`;
-
-  const qaText = QUESTIONS.map((q) => {
-    const raw = a[q.key];
-    const value = raw ? q.map[raw] ?? raw : "-";
-    return `${q.label}: ${value}`;
-  }).join("\n");
-
-  const text = [
-    "Instagram運用診断に新しい回答が届きました。",
-    "",
-    `アカウント名: ${submission.instagramAccountName}`,
-    `運用目的: ${submission.purpose}`,
-    `スコア: ${submission.score} / 10`,
-    `レベル: ${submission.level}`,
-    submission.sourceUrl ? `配布元URL: ${submission.sourceUrl}` : "",
-    `回答日時: ${new Date(submission.createdAt).toLocaleString("ja-JP")}`,
-    "",
-    "■ 質問別の回答",
-    qaText,
-    "",
-    parsed.currentState ? `■ 現在地\n${parsed.currentState}` : "",
-    parsed.growth ? `\n■ 伸びしろ\n${parsed.growth}` : "",
-    parsed.improvements?.length ? `\n■ 改善案\n- ${parsed.improvements.join("\n- ")}` : "",
-    "",
-    `管理画面で詳細を見る: ${detailUrl}`,
-  ]
-    .filter((line) => line !== "")
-    .join("\n");
 
   const qaHtml = QUESTIONS.map((q) => {
     const raw = a[q.key];
@@ -106,26 +78,49 @@ function buildEmail(submission: Submission): { subject: string; text: string; ht
     ${parsed.improvements?.length ? `<h3 style="margin:20px 0 4px;">改善案</h3><ul style="margin:0;padding-left:20px;line-height:1.7;">${parsed.improvements.map((i) => `<li>${escapeHtml(i)}</li>`).join("")}</ul>` : ""}
 
     <p style="margin:24px 0 0;">
-      <a href="${detailUrl}" style="display:inline-block;background:#141414;color:#fff;text-decoration:none;padding:10px 18px;border-radius:8px;">管理画面で詳細を見る</a>
+      <a href="${detailUrl}" style="display:inline-block;background:#22335a;color:#fff;text-decoration:none;padding:10px 18px;border-radius:8px;">管理画面で詳細を見る</a>
     </p>
   </div>`;
 
   return {
     subject: `【Instagram診断】新しい回答が届きました（${submission.instagramAccountName}）`,
-    text,
     html,
   };
 }
 
-// 診断回答の通知メールを送信する。
-// 設定不足・宛先ゼロ・送信失敗のいずれでも例外を投げず、呼び出し側の処理を止めない設計。
+// Microsoft Entra ID(Azure AD) のクライアント認証情報フローでアクセストークンを取得する。
+async function getGraphToken(tenantId: string, clientId: string, clientSecret: string): Promise<string> {
+  const res = await fetch(`https://login.microsoftonline.com/${tenantId}/oauth2/v2.0/token`, {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({
+      client_id: clientId,
+      client_secret: clientSecret,
+      scope: "https://graph.microsoft.com/.default",
+      grant_type: "client_credentials",
+    }),
+  });
+  if (!res.ok) {
+    const body = await res.text().catch(() => "");
+    throw new Error(`Graph token error ${res.status}: ${body}`);
+  }
+  const data = (await res.json()) as { access_token?: string };
+  if (!data.access_token) throw new Error("Graph token error: access_token がありません");
+  return data.access_token;
+}
+
+// 診断回答の通知メールを Microsoft Graph 経由で送信する。
+// 設定不足・宛先ゼロ・送信失敗のいずれでも例外で呼び出し側を止めない設計。
 // （診断の保存と結果表示はメール通知より優先される）
 export async function sendDiagnosisNotification(submission: Submission): Promise<void> {
-  const apiKey = process.env.RESEND_API_KEY;
-  const from = process.env.MAIL_FROM;
+  const tenantId = process.env.GRAPH_TENANT_ID;
+  const clientId = process.env.GRAPH_CLIENT_ID;
+  const clientSecret = process.env.GRAPH_CLIENT_SECRET;
+  const fromMailbox = process.env.MAIL_FROM; // 送信元メールボックス（テナント内の実在アドレス）
+  const fromName = process.env.MAIL_FROM_NAME; // 任意：差出人の表示名
 
-  if (!apiKey || !from) {
-    console.warn("[notify] RESEND_API_KEY または MAIL_FROM が未設定のため通知をスキップしました");
+  if (!tenantId || !clientId || !clientSecret || !fromMailbox) {
+    console.warn("[notify] Graph の設定（GRAPH_* / MAIL_FROM）が未設定のため通知をスキップしました");
     return;
   }
 
@@ -135,27 +130,34 @@ export async function sendDiagnosisNotification(submission: Submission): Promise
     return;
   }
 
-  const { subject, text, html } = buildEmail(submission);
+  const token = await getGraphToken(tenantId, clientId, clientSecret);
+  const { subject, html } = buildEmail(submission);
 
-  // 受信者同士でメアドが見えないよう BCC で送る（to は送信元自身）。
-  const res = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      from,
-      to: [from],
-      bcc: recipients.map((r) => r.email),
-      subject,
-      text,
-      html,
-    }),
-  });
+  // 受信者同士でメアドが見えないよう BCC で送る（To は送信元自身）。
+  const message: Record<string, unknown> = {
+    subject,
+    body: { contentType: "HTML", content: html },
+    toRecipients: [{ emailAddress: { address: fromMailbox } }],
+    bccRecipients: recipients.map((r) => ({ emailAddress: { address: r.email } })),
+  };
+  if (fromName) {
+    message.from = { emailAddress: { address: fromMailbox, name: fromName } };
+  }
+
+  const res = await fetch(
+    `https://graph.microsoft.com/v1.0/users/${encodeURIComponent(fromMailbox)}/sendMail`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ message, saveToSentItems: true }),
+    }
+  );
 
   if (!res.ok) {
     const body = await res.text().catch(() => "");
-    throw new Error(`Resend API error ${res.status}: ${body}`);
+    throw new Error(`Graph sendMail error ${res.status}: ${body}`);
   }
 }
