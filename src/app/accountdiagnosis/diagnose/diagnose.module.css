@@ -183,11 +183,21 @@
   font-weight: 700;
   cursor: pointer;
   font-size: 15px;
-  transition: background 0.15s;
+  transition: background 0.15s, transform 0.08s ease, opacity 0.15s;
 }
 
 .submit:hover {
   background: #1a2849;
+}
+
+.submit:active {
+  transform: scale(0.97);
+}
+
+.submit:disabled {
+  opacity: 0.6;
+  cursor: progress;
+  transform: none;
 }
 
 .back {

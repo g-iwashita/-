@@ -2,6 +2,7 @@
 
 import { z } from "zod";
 import { redirect } from "next/navigation";
+import { after } from "next/server";
 import { insertSubmission } from "@/lib/db";
 import { sendDiagnosisNotification } from "@/lib/email";
 import { scoreDiagnosis, type DiagnosisAnswers } from "@/lib/scoring";
@@ -60,12 +61,15 @@ export async function submitDiagnosis(formData: FormData) {
     level: result.level,
   });
 
-  // 通知メールを送信する。失敗しても診断の保存・結果表示は止めない。
-  try {
-    await sendDiagnosisNotification(submission);
-  } catch (e) {
-    console.error("[notify] 通知メールの送信に失敗しました:", e);
-  }
+  // 通知メールはレスポンス後に裏で送る（結果ページ表示を待たせない）。
+  // 失敗しても診断の保存・結果表示には影響しない。
+  after(async () => {
+    try {
+      await sendDiagnosisNotification(submission);
+    } catch (e) {
+      console.error("[notify] 通知メールの送信に失敗しました:", e);
+    }
+  });
 
   redirect(`/accountdiagnosis/result/${id}`);
 }

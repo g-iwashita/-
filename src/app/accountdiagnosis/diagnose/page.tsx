@@ -1,4 +1,5 @@
 import { submitDiagnosis } from "@/app/diagnose/actions";
+import { SubmitButton } from "./SubmitButton";
 import styles from "./diagnose.module.css";
 
 type Props = {
@@ -200,9 +201,7 @@ export default async function DiagnosePage(props: Props) {
           </section>
 
           <div className={styles.actions}>
-            <button className={styles.submit} type="submit">
-              診断する
-            </button>
+            <SubmitButton />
           </div>
         </form>
       </main>
