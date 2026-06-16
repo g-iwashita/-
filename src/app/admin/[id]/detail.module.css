@@ -1,7 +1,8 @@
 .page {
   min-height: 100vh;
-  background: linear-gradient(180deg, #0b0b10 0%, #07070b 100%);
-  color: #f5f6f8;
+  background: #f6f8fb;
+  color: #1a1f36;
+  font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic UI", "Meiryo", sans-serif;
 }
 
 .header {
@@ -14,20 +15,26 @@
 }
 
 .back {
-  color: rgba(245, 246, 248, 0.9);
+  color: #5a6478;
   text-decoration: none;
 }
 
 .back:hover {
+  color: #1a1f36;
   text-decoration: underline;
 }
 
 .exportOne {
-  color: rgba(245, 246, 248, 0.9);
+  color: #22335a;
   text-decoration: none;
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  border: 1px solid #d8dde6;
+  background: #ffffff;
   padding: 8px 12px;
   border-radius: 999px;
+}
+
+.exportOne:hover {
+  background: #f0f3f8;
 }
 
 .main {
@@ -39,6 +46,7 @@
 .title {
   margin: 10px 0 16px;
   font-size: 22px;
+  color: #1a1f36;
 }
 
 .grid {
@@ -48,39 +56,41 @@
 }
 
 .card {
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid #e2e6ec;
   border-radius: 16px;
-  padding: 14px;
-  background: rgba(255, 255, 255, 0.03);
+  padding: 16px;
+  background: #ffffff;
 }
 
 .kicker {
   font-size: 12px;
-  color: rgba(245, 246, 248, 0.7);
+  color: #6b7588;
 }
 
 .value {
   margin-top: 6px;
-  color: rgba(245, 246, 248, 0.92);
+  color: #1a1f36;
   white-space: pre-wrap;
 }
 
 .score {
   font-weight: 900;
   font-size: 22px;
+  color: #22335a;
 }
 
 .section {
   margin-top: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid #e2e6ec;
   border-radius: 16px;
-  padding: 14px;
-  background: rgba(255, 255, 255, 0.02);
+  padding: 16px;
+  background: #ffffff;
 }
 
 .sectionTitle {
-  margin: 0 0 10px;
+  margin: 0 0 12px;
   font-size: 16px;
+  color: #22335a;
 }
 
 .answers {
@@ -94,32 +104,32 @@
   gap: 12px;
   padding: 12px;
   border-radius: 12px;
-  background: rgba(0, 0, 0, 0.25);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #f7f9fc;
+  border: 1px solid #e2e6ec;
 }
 
 .answerQ {
-  color: rgba(245, 246, 248, 0.86);
+  color: #5a6478;
 }
 
 .answerA {
-  font-weight: 800;
-  color: rgba(245, 246, 248, 0.92);
+  font-weight: 700;
+  color: #1a1f36;
 }
 
 .pre {
   margin: 0;
   padding: 12px;
   border-radius: 12px;
-  background: rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #f7f9fc;
+  border: 1px solid #e2e6ec;
   overflow: auto;
   font-size: 12px;
   line-height: 1.5;
 }
 
 .feedbackText {
-  color: rgba(245, 246, 248, 0.9);
+  color: #2b3245;
   font-size: 14px;
   line-height: 1.9;
   margin: 0;
@@ -135,7 +145,7 @@
 }
 
 .improvementItem {
-  color: rgba(245, 246, 248, 0.9);
+  color: #2b3245;
   font-size: 14px;
   line-height: 1.85;
   padding-left: 20px;
@@ -144,7 +154,7 @@
 
 .improvementItem::before {
   content: "・";
-  color: rgba(245, 246, 248, 0.65);
+  color: #22335a;
   font-weight: 700;
   position: absolute;
   left: 0;
@@ -152,7 +162,7 @@
 }
 
 .feedbackEmpty {
-  color: rgba(245, 246, 248, 0.55);
+  color: #9aa3b2;
   font-size: 13px;
   margin: 0;
 }
@@ -165,10 +175,15 @@
   display: inline-flex;
   text-decoration: none;
   border-radius: 999px;
-  padding: 12px 16px;
-  background: linear-gradient(90deg, var(--axis-accent), #f1d08a);
-  color: #141414;
-  font-weight: 800;
+  padding: 12px 18px;
+  background: #22335a;
+  color: #ffffff;
+  font-weight: 700;
+  transition: background 0.15s;
+}
+
+.public:hover {
+  background: #1a2849;
 }
 
 @media (max-width: 860px) {
@@ -179,4 +194,3 @@
     grid-template-columns: 1fr;
   }
 }
-

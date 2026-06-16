@@ -5,6 +5,15 @@ type Props = {
   searchParams?: Promise<Record<string, string | string[] | undefined>>;
 };
 
+const inputStyle: React.CSSProperties = {
+  padding: "11px 13px",
+  borderRadius: 12,
+  border: "1px solid #d8dde6",
+  background: "#ffffff",
+  color: "#1a1f36",
+  fontSize: 14,
+};
+
 export default async function AdminLoginPage(props: Props) {
   const sp = (await props.searchParams) ?? {};
   const error = sp.error === "1";
@@ -12,63 +21,50 @@ export default async function AdminLoginPage(props: Props) {
 
   return (
     <div className={styles.page}>
-      <main className={styles.main} style={{ maxWidth: 400, paddingTop: 80 }}>
+      <main className={styles.main} style={{ maxWidth: 420, paddingTop: 64 }}>
         <h1 className={styles.title}>管理画面ログイン</h1>
         {changedAdmin ? (
-          <p style={{ color: "#7ddc9a", marginBottom: 16 }}>
+          <p style={{ color: "#2e7d46", marginBottom: 16 }}>
             管理者用パスワードを変更しました。新しいパスワードでログインしてください。
           </p>
         ) : null}
         {error ? (
-          <p style={{ color: "rgba(255,100,100,0.9)", marginBottom: 16 }}>
+          <p style={{ color: "#8b2e2e", marginBottom: 16 }}>
             ユーザー名またはパスワードが違います。
           </p>
         ) : null}
-        <form action="/api/admin-login" method="post" style={{ display: "grid", gap: 12 }}>
+        <form
+          action="/api/admin-login"
+          method="post"
+          style={{
+            display: "grid",
+            gap: 14,
+            background: "#ffffff",
+            border: "1px solid #e2e6ec",
+            borderRadius: 16,
+            padding: 24,
+          }}
+        >
           <label style={{ display: "grid", gap: 4 }}>
-            <span style={{ fontSize: 13, color: "rgba(245,246,248,0.8)" }}>
+            <span style={{ fontSize: 13, color: "#5a6478" }}>
               ユーザー名（管理者は admin、メンバーは member）
             </span>
-            <input
-              type="text"
-              name="user"
-              required
-              autoComplete="username"
-              style={{
-                padding: "10px 12px",
-                borderRadius: 12,
-                border: "1px solid rgba(255,255,255,0.2)",
-                background: "rgba(0,0,0,0.3)",
-                color: "#f5f6f8",
-              }}
-            />
+            <input type="text" name="user" required autoComplete="username" style={inputStyle} />
           </label>
           <label style={{ display: "grid", gap: 4 }}>
-            <span style={{ fontSize: 13, color: "rgba(245,246,248,0.8)" }}>パスワード</span>
-            <input
-              type="password"
-              name="pass"
-              required
-              autoComplete="current-password"
-              style={{
-                padding: "10px 12px",
-                borderRadius: 12,
-                border: "1px solid rgba(255,255,255,0.2)",
-                background: "rgba(0,0,0,0.3)",
-                color: "#f5f6f8",
-              }}
-            />
+            <span style={{ fontSize: 13, color: "#5a6478" }}>パスワード</span>
+            <input type="password" name="pass" required autoComplete="current-password" style={inputStyle} />
           </label>
           <button
             type="submit"
             style={{
-              marginTop: 8,
+              marginTop: 4,
               padding: "12px 16px",
               borderRadius: 999,
               border: 0,
-              background: "linear-gradient(90deg, var(--axis-accent), #f1d08a)",
-              color: "#141414",
-              fontWeight: 800,
+              background: "#22335a",
+              color: "#ffffff",
+              fontWeight: 700,
               cursor: "pointer",
             }}
           >
@@ -76,7 +72,7 @@ export default async function AdminLoginPage(props: Props) {
           </button>
         </form>
         <p style={{ marginTop: 24 }}>
-          <Link href="/" style={{ color: "rgba(245,246,248,0.8)" }}>
+          <Link href="/" style={{ color: "#6b7588" }}>
             ← トップへ
           </Link>
         </p>

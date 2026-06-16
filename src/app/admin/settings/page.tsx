@@ -17,35 +17,36 @@ const ERROR_MESSAGES: Record<string, string> = {
 };
 
 const inputStyle: React.CSSProperties = {
-  padding: "10px 12px",
+  padding: "11px 13px",
   borderRadius: 12,
-  border: "1px solid rgba(255,255,255,0.2)",
-  background: "rgba(0,0,0,0.3)",
-  color: "#f5f6f8",
+  border: "1px solid #d8dde6",
+  background: "#ffffff",
+  color: "#1a1f36",
+  fontSize: 14,
 };
 
 const labelStyle: React.CSSProperties = {
   fontSize: 13,
-  color: "rgba(245,246,248,0.8)",
+  color: "#5a6478",
 };
 
 const buttonStyle: React.CSSProperties = {
   marginTop: 4,
-  padding: "10px 20px",
+  padding: "11px 22px",
   borderRadius: 999,
   border: 0,
-  background: "linear-gradient(90deg, var(--axis-accent), #f1d08a)",
-  color: "#141414",
-  fontWeight: 800,
+  background: "#22335a",
+  color: "#ffffff",
+  fontWeight: 700,
   cursor: "pointer",
   justifySelf: "start",
 };
 
 const cardStyle: React.CSSProperties = {
-  padding: 20,
+  padding: 22,
   borderRadius: 16,
-  background: "rgba(255,255,255,0.04)",
-  border: "1px solid rgba(255,255,255,0.08)",
+  background: "#ffffff",
+  border: "1px solid #e2e6ec",
   marginBottom: 20,
 };
 
@@ -73,18 +74,18 @@ export default async function SettingsPage(props: Props) {
         <h1 className={styles.title}>設定</h1>
 
         {changed === "member" ? (
-          <p style={{ color: "#7ddc9a", marginBottom: 16 }}>
+          <p style={{ color: "#2e7d46", marginBottom: 16 }}>
             メンバー用パスワードを変更しました。新しいパスワードを残りのメンバーに共有してください。
           </p>
         ) : null}
         {errorCode && ERROR_MESSAGES[errorCode] ? (
-          <p style={{ color: "rgba(255,120,120,0.95)", marginBottom: 16 }}>{ERROR_MESSAGES[errorCode]}</p>
+          <p style={{ color: "#8b2e2e", marginBottom: 16 }}>{ERROR_MESSAGES[errorCode]}</p>
         ) : null}
 
         {/* メンバー用パスワード変更（退職対応はこちら） */}
         <div style={cardStyle}>
           <h2 style={{ fontSize: 17, margin: "0 0 4px" }}>メンバー用パスワードの変更</h2>
-          <p style={{ color: "rgba(245,246,248,0.65)", margin: "0 0 16px", lineHeight: 1.7, fontSize: 14 }}>
+          <p style={{ color: "#5a6478", margin: "0 0 16px", lineHeight: 1.7, fontSize: 14 }}>
             変更すると、現在ログイン中のメンバー全員が自動的にログアウトされます。
             退職者が出たときは、ここで変更すれば即座にアクセスできなくなります。
             変更後は新しいパスワードを残りのメンバーへ共有してください。
@@ -108,7 +109,7 @@ export default async function SettingsPage(props: Props) {
         {/* 管理者用パスワード変更 */}
         <div style={cardStyle}>
           <h2 style={{ fontSize: 17, margin: "0 0 4px" }}>管理者(admin)用パスワードの変更</h2>
-          <p style={{ color: "rgba(245,246,248,0.65)", margin: "0 0 16px", lineHeight: 1.7, fontSize: 14 }}>
+          <p style={{ color: "#5a6478", margin: "0 0 16px", lineHeight: 1.7, fontSize: 14 }}>
             変更すると、現在の管理者ログインも一度切れます。変更後は新しいパスワードで入り直してください。
           </p>
           <form action={changePasswordAction} style={{ display: "grid", gap: 12, maxWidth: 400 }}>
