@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getSubmissionById } from "@/lib/db";
 import styles from "./result.module.css";
@@ -86,12 +85,6 @@ export default async function ResultPage(props: Props) {
             </ul>
           </section>
         ) : null}
-
-        <div className={styles.actions}>
-          <Link className={styles.primary} href="/accountdiagnosis/diagnose">
-            もう一度診断する
-          </Link>
-        </div>
       </main>
     </div>
   );
